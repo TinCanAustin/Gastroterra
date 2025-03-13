@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { session } from '../find-restaurent/route';
+import { validateToken } from "@/lib/session";
 
 export async function GET(req: NextRequest) {
     try{
@@ -9,11 +9,12 @@ export async function GET(req: NextRequest) {
             return NextResponse.json({error: true, message: 'Token Required'}, {status: 400});
         }
         
-        if(!(token in session)){
+        if(!validateToken(token)){
             return NextResponse.json({error: false, sessionExsist: false});
         }
         return NextResponse.json({error: false, sessionExsist: true});
     }catch(err){
+        console.error(err);
         return NextResponse.json({ error: true, message: 'Something went wrong.' }, { status: 500 });
     }
 }

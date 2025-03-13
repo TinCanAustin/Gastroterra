@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function sessionFind(){
+export default function SessionFind(){
     const [token, setToken] = useState<string>('');
     const [notFound, setNotFound] = useState<boolean>(false);
     const router = useRouter()

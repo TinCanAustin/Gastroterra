@@ -1,7 +1,6 @@
 import { Preference } from "@/dtos/preference.dot";
 import { NextRequest, NextResponse } from "next/server";
-
-export let session: { [key: string] : {content: any, expiration: number}} = {};
+import { validateExpiration, validateToken, getSession, setSession, deleteSession} from "@/lib/session";
 
 function generateToken() : string {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -18,10 +17,6 @@ function generateExpiration(): number{
     return currentTime.getTime();
 }
 
-function validateExpiration(expiration:number) : boolean {
-    const currentTime = new Date().getTime();
-    return currentTime > expiration;
-}
 
 export async function GET(req: NextRequest) {
     try{
@@ -31,19 +26,20 @@ export async function GET(req: NextRequest) {
             return NextResponse.json({error: true, message: 'Token Required'}, {status: 400});
         }
         
-        if(!(token in session)){
+        if(!validateToken(token)){
             return NextResponse.json({error: true, message: 'Session Not Found'}, {status: 404});
         }
 
-        const content = session[token];
+        const content = getSession(token);
 
         if(validateExpiration(content.expiration)){
-            delete session[token];
+            deleteSession(token);
             return NextResponse.json({error: true, message: 'Session has expired.'}, {status: 410});
         }
 
         return NextResponse.json({ error: false, data: content.content });
     }catch (err){
+        console.error(err);
         return NextResponse.json({ error: true, message: 'Something went wrong.' }, { status: 500 });
     }
 }
@@ -98,15 +94,13 @@ export async function POST(req: NextRequest){
         const token = generateToken();
         const _expiration = generateExpiration();
 
-        session[token] = {
-            content: jsonData,
-            expiration: _expiration
-        }
+        setSession(token, jsonData, _expiration)
 
-        console.log('Session Stored: ', session[token]);
+        console.log('Session Stored: ', getSession(token));
 
         return NextResponse.json({error: false, token: token});
     }catch(err){
+        console.error(err);
         return NextResponse.json({error: true, message: 'Something went wrong.'}, {status: 500})
     }
 }

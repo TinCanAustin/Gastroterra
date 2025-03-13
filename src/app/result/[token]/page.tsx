@@ -1,11 +1,9 @@
 import { notFound } from "next/navigation";
 
 export default async function result({ params } : {
-    params: {
-        token: string;
-    }
+    params: Promise<{ token: string }>
 }){
-    const {token} = await params;
+    const { token } = await params;
     let _data;
 
     try{
@@ -26,14 +24,14 @@ export default async function result({ params } : {
         <>
             <h2>Token {token}</h2>
             <div>
-                <h2>Restaurant Name: {_data.data.name}</h2>
-                <p>location: {_data.data.location}</p>
-                <p>Rating: {_data.data.rating} ⭐</p>
-                <p>Price Range: {_data.data.price_range}</p>
+                <h2>Restaurant Name: {_data?.data?.name}</h2>
+                <p>location: {_data?.data?.location}</p>
+                <p>Rating: {_data?.data?.rating} ⭐</p>
+                <p>Price Range: {_data?.data?.price_range}</p>
                 <p>
-                    Website: <a href={_data.data.url} target="_blank">{_data.data.url}</a>
+                    Website: <a href={_data?.data?.url} target="_blank">{_data?.data?.url}</a>
                 </p>
             </div>
         </>
-    )
+    );
 }

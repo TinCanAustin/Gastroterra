@@ -4,7 +4,7 @@ import { Preference } from "@/dtos/preference.dot";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function seek(){
+export default function Seek(){
     const [preference, setPref] = useState<Preference>({});
     const router = useRouter();
     
@@ -49,7 +49,6 @@ export default function seek(){
 
             if(responce.ok){
                 const data = await responce.json();
-                console.log(data.token);
                 
                 router.replace(`/result/${data.token}`)
             }else{
@@ -103,7 +102,7 @@ export default function seek(){
                 </fieldset>
 
                 <fieldset>
-                    <legend>What's your budget range? (Per person if group)</legend>
+                    <legend>What&apos;s your budget range? (Per person if group)</legend>
 
                     <input type="radio" className="option" name="price" value="below 10" onChange={changeHandler}/>
                     <label htmlFor="below 10">$ (Below 10$)</label>
@@ -144,7 +143,7 @@ export default function seek(){
                     <label htmlFor="short-drive">Short Drive</label>
                     <br />
                     <input type="radio" className="option" name="travel" value="anything" onChange={changeHandler}/>
-                    <label htmlFor="anything">Doesn't Matter</label> 
+                    <label htmlFor="anything">Doesn&apos;t Matter</label> 
                     <br />
                     <label htmlFor="location">Where do you live?</label> 
                     <input type="input" className="travel" name="location" onChange={changeHandler}/>
@@ -160,7 +159,7 @@ export default function seek(){
                 </fieldset>
 
                 <fieldset>
-                    <legend>If you care, what kind of ambiance do you want? (Skip if you'r okay with anything.)</legend>
+                    <legend>If you care, what kind of ambiance do you want? (Skip if you&apos;r okay with anything.)</legend>
                     <input type="checkbox" className="option" name="ambiance" value="outdoor_seating" onChange={changeHandler}/>
                     <label htmlFor="outdoor_seating">Outdoor Seating</label>
                     <br />

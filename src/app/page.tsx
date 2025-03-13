@@ -1,5 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Home() {
   const router = useRouter();
@@ -14,7 +15,7 @@ export default function Home() {
       <h1>Gastroterra</h1>
       <button onClick={startButton}>Begin Experience</button>
       <br/><br/>
-      <a href="/session">Have a session code?</a>
+      <Link href="/session">Have a session code?</Link>
     </>
   );
 }
